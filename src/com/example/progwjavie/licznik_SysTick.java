@@ -19,8 +19,8 @@ public class licznik_SysTick extends Observable {
      * Constructor for objects of class CortexM0SysTick
      */
     public licznik_SysTick() {
-        SYST_RVR = 4;
-        SYST_CVR = 3;
+        SYST_RVR = 10;
+        SYST_CVR = 5;
         tickInt = false;
     }
 

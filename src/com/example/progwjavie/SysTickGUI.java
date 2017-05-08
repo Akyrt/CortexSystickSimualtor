@@ -3,7 +3,10 @@ package com.example.progwjavie;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by Akyrt on 2017-04-13.
@@ -16,6 +19,7 @@ public class SysTickGUI extends JFrame implements ActionListener {
     int kNumber;
     private licznik_SysTick myDemoCounter;
     PulseGenerator generate;
+    JTextField howManyBurstImpulse;
 
     /**
      * Constructor for objects of class SysTickGUI
@@ -29,6 +33,9 @@ public class SysTickGUI extends JFrame implements ActionListener {
         makeGUI();
         generate = new PulseGenerator();
         generate.addActionListener(this);
+        generate.setPulseCount(5);
+
+
 
     }
 
@@ -133,7 +140,7 @@ public class SysTickGUI extends JFrame implements ActionListener {
         pPrawy = new JPanel();
         add(pPrawy, BorderLayout.EAST);
         pPrawy.setBackground(Color.RED);
-        pPrawy.setLayout(new GridLayout(2, 2));
+        pPrawy.setLayout(new GridLayout(3, 2));
         // 1 wiersz
         JLabel etInterrupt = new JLabel("Stan przerwania ", SwingConstants.CENTER);
         pPrawy.add(etInterrupt);
@@ -147,6 +154,15 @@ public class SysTickGUI extends JFrame implements ActionListener {
         count.setBackground(Color.RED);
         pPrawy.add(count);
         enable.addActionListener(this);
+
+        howManyBurstImpulse = new JTextField("Set burst impulse",SwingConstants.CENTER);
+        howManyBurstImpulse.addActionListener(e -> {
+            int bImp = Integer.parseInt(howManyBurstImpulse.getText());
+            generate.setPulseCount(bImp);
+        });
+        pPrawy.add(howManyBurstImpulse);
+
+
 
         /*************** Panel dolny **********************/
         pDolny = new JPanel();
@@ -171,6 +187,14 @@ public class SysTickGUI extends JFrame implements ActionListener {
         stanImp = new JTextField(3);
         pDolny.add(stanImp);
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+
+                generate.killGenThread(); // zamyka dzialanie generatora przy wyjsciu z programu
+            }
+        });
 
         validate();
 
@@ -228,7 +252,10 @@ public class SysTickGUI extends JFrame implements ActionListener {
         }
         if (e.getSource() == genOnOFF) {
             boolean gState = genOnOFF.isSelected();
-            if (gState == true) generate.trigger();
+            if (gState == true) {
+                generate.setMode(PulseSource.BURST_MODE);
+                generate.trigger();
+            }
             else generate.halt();
 
 
@@ -239,6 +266,9 @@ public class SysTickGUI extends JFrame implements ActionListener {
         if (e.getSource() == generate) {       // warunek sprawdzajacy czy zostal klikniety Pojedyńczy impuls
             myDemoCounter.impuls();
             rejCVR.setText(" " + myDemoCounter.getCVR());
+            if (!generate.isOn()) {
+                genOnOFF.setSelected(false);
+            }
         }
         displayState();
 
