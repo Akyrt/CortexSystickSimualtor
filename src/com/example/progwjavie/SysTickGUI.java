@@ -21,6 +21,7 @@ public class SysTickGUI extends JFrame implements ActionListener {
     private licznik_SysTick myDemoCounter;
     PulseGenerator generate;
     JSlider sliderBurstMode, sliderSetDelay, sliderTimer;
+    JLabel etTimer;
 
     //JTextField howManyBurstImpulse;
 
@@ -57,6 +58,7 @@ public class SysTickGUI extends JFrame implements ActionListener {
 
         /***************** Panel lewy *******************************/
         pLewy = new JPanel();
+        pLewy.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         add(pLewy, BorderLayout.WEST);      // wydzielenie lewej części obszaru okna
         pLewy.setBackground(Color.CYAN);
         pLewy.setLayout(new GridLayout(5, 2)); // podzielenie części na wiersze i kolumny
@@ -106,7 +108,7 @@ public class SysTickGUI extends JFrame implements ActionListener {
 
 
         pCentrum = new JPanel();
-
+pCentrum.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         add(pCentrum, BorderLayout.CENTER);
         pCentrum.setLayout(new GridLayout(7, 2));
@@ -199,7 +201,8 @@ public class SysTickGUI extends JFrame implements ActionListener {
         pPrawy = new JPanel();
         add(pPrawy, BorderLayout.EAST);
         pPrawy.setBackground(Color.RED);
-        pPrawy.setLayout(new GridLayout(3, 2));
+        pPrawy.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        pPrawy.setLayout(new GridLayout(4, 2));
         // 1 wiersz
         JLabel etInterrupt = new JLabel("Stan przerwania ", SwingConstants.CENTER);
         pPrawy.add(etInterrupt);
@@ -208,7 +211,7 @@ public class SysTickGUI extends JFrame implements ActionListener {
         interrupt.setEditable(false);
         pPrawy.add(interrupt);
         // 2 wiersz
-        JLabel etTimer = new JLabel("Stan licznika", SwingConstants.CENTER);
+        etTimer = new JLabel("Stan licznika", SwingConstants.CENTER);
         pPrawy.add(etTimer);
 
         sliderTimer = new JSlider();
@@ -231,6 +234,8 @@ public class SysTickGUI extends JFrame implements ActionListener {
             generate.setPulseCount(bImp);
         });
         pPrawy.add(howManyBurstImpulse);*/
+        Knob galka = new Knob();
+        pPrawy.add(galka);
 
 
         /*************** Panel dolny **********************/
@@ -297,6 +302,8 @@ public class SysTickGUI extends JFrame implements ActionListener {
         rejRVR.setText("" + myDemoCounter.getRVR());
         count.setSelected(myDemoCounter.isCountFlag());
         sliderTimer.setValue(myDemoCounter.getCVR());
+        etTimer.setText("Stan licznika " + myDemoCounter.getCVR() + " impulsów.");
+
         if (myDemoCounter.getInterrupt() == true) {
             interrupt.setText(" ** Przerwanie ** ");
             interrupt.setBackground(Color.ORANGE);
