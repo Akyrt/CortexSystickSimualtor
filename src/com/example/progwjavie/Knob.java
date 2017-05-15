@@ -8,7 +8,8 @@ import java.awt.event.*;
  * Created by Akyrt 13-May-17.
  */
 
-public class Knob extends JComponent implements MouseListener {
+// dodac implementacje MouseMotionListener aby dodac imitację przeciągania myszy(kręcenie gałką a nie klikanie)
+public class Knob extends JComponent implements MouseMotionListener {
     int value = 0;
     int newValue;
     boolean pressed = false;
@@ -21,7 +22,8 @@ public class Knob extends JComponent implements MouseListener {
 
     public Knob(int value) { // konstruktor
         this.value = this.newValue = 0;
-        addMouseListener(this);
+       // addMouseListener(this);
+       addMouseMotionListener(this);
     }//end of constructor
 
     public void addActionListener(ActionListener listener) {
@@ -92,7 +94,7 @@ public class Knob extends JComponent implements MouseListener {
         repaint();
     }
 
-    @Override
+   // @Override
     public void mouseClicked(MouseEvent e) {
 
     }
@@ -102,7 +104,7 @@ public class Knob extends JComponent implements MouseListener {
         repaint();
     }
 
-    public void mouseReleased(MouseEvent me) {
+    /*public void mouseReleased(MouseEvent me) {
         int x, y;
         if (pressed == true) {
             pressed = false;
@@ -117,5 +119,30 @@ public class Knob extends JComponent implements MouseListener {
             if (actionListener != null) actionListener.actionPerformed(new
                     ActionEvent(this, ActionEvent.ACTION_PERFORMED, " ??? "));
         } // ignorujemy zwolnienie przycisku poza komponentem!
+    }*/
+
+   @Override
+    public void mouseDragged(MouseEvent me) {
+        pressed = true;
+        repaint();
+        int x, y;
+        if (pressed == true) {
+            pressed = false;
+            x = me.getX();
+            y = me.getY();
+            double yy = (getSize().height / 2.0 - y);
+            double xx = (x - getSize().width / 2.0);
+            newValue = 90 - (int) (180 / Math.PI * Math.atan(yy / xx));
+            if (xx < 0) newValue += 180;
+            value = newValue;
+            repaint();
+            if (actionListener != null) actionListener.actionPerformed(new
+                    ActionEvent(this, ActionEvent.ACTION_PERFORMED, " ??? "));
+        } // ignorujemy zwolnienie przycisku poza komponentem!
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
     }
 }

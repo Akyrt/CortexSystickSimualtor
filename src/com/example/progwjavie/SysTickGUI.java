@@ -13,15 +13,16 @@ import java.awt.event.WindowEvent;
  */
 public class SysTickGUI extends JFrame implements ActionListener {
     // instance variables - replace the example below with your own
-    JButton oneImp, kImp;
-    JTextField rejRVR, rejCVR, enterkImp, regSetCVR, regSetRVR, interrupt, stateImp, stateBurstImp, stateDelayTime;
-    JRadioButton enable, count, tickInt, genOnOFF, modeSet;
-    Integer bImp;
+    private JButton oneImp, kImp;
+    private JTextField rejRVR, rejCVR, enterkImp, regSetCVR, regSetRVR, interrupt, stateImp, stateBurstImp, stateDelayTime;
+    private JRadioButton enable, count, tickInt, genOnOFF, modeSet;
+    private Integer bImp;
     int kNumber;
     private licznik_SysTick myDemoCounter;
     PulseGenerator generate;
-    JSlider sliderBurstMode, sliderSetDelay, sliderTimer;
-    JLabel etTimer;
+    private JSlider sliderBurstMode, sliderSetDelay, sliderTimer;
+    private JLabel etTimer;
+    private Knob setDelayKnob, setBurstKnob;
 
     //JTextField howManyBurstImpulse;
 
@@ -228,14 +229,23 @@ public class SysTickGUI extends JFrame implements ActionListener {
         count.setBackground(Color.RED);
         pPrawy.add(count);
 // 4 wiersz potencjometry
-        Knob galka = new Knob();
-        galka.addActionListener(e -> {
-            Integer newDelay = galka.getKnobValue();
+        setDelayKnob = new Knob();
+        setDelayKnob.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        setDelayKnob.addActionListener(e -> {
+            Integer newDelay = setDelayKnob.getKnobValue();
             generate.setPulseDelay(newDelay);
             stateDelayTime.setText(newDelay.toString());
         });
+        pPrawy.add(setDelayKnob);
 
-        pPrawy.add(galka);
+        setBurstKnob= new Knob();
+        setBurstKnob.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        setBurstKnob.addActionListener(e -> {
+            Integer newBurst = setBurstKnob.getKnobValue();
+            generate.setPulseCount(newBurst);
+            stateBurstImp.setText(newBurst.toString());
+        });
+        pPrawy.add(setBurstKnob);
 
 
         /*************** Panel dolny **********************/
