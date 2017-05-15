@@ -108,7 +108,7 @@ public class SysTickGUI extends JFrame implements ActionListener {
 
 
         pCentrum = new JPanel();
-pCentrum.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        pCentrum.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         add(pCentrum, BorderLayout.CENTER);
         pCentrum.setLayout(new GridLayout(7, 2));
@@ -227,14 +227,14 @@ pCentrum.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         count = new JRadioButton();
         count.setBackground(Color.RED);
         pPrawy.add(count);
-/*
-        howManyBurstImpulse = new JTextField("Set burst impulse", SwingConstants.CENTER);
-        howManyBurstImpulse.addActionListener(e -> {
-            int bImp = Integer.parseInt(howManyBurstImpulse.getText());
-            generate.setPulseCount(bImp);
-        });
-        pPrawy.add(howManyBurstImpulse);*/
+// 4 wiersz potencjometry
         Knob galka = new Knob();
+        galka.addActionListener(e -> {
+            Integer newDelay = galka.getKnobValue();
+            generate.setPulseDelay(newDelay);
+            stateDelayTime.setText(newDelay.toString());
+        });
+
         pPrawy.add(galka);
 
 

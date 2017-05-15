@@ -1,5 +1,6 @@
 package com.example.progwjavie;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -7,9 +8,9 @@ import java.awt.event.*;
  * Created by Akyrt 13-May-17.
  */
 
-public class Knob extends Component implements MouseListener {
-    int azymut = 0;
-    int newAzymut;
+public class Knob extends JComponent implements MouseListener {
+    int value = 0;
+    int newValue;
     boolean pressed = false;
     boolean entered = false;
     ActionListener actionListener;//Refers to a list of ActionListener objects
@@ -18,8 +19,8 @@ public class Knob extends Component implements MouseListener {
         this(0);
     }//end of constructor
 
-    public Knob(int azymut) { // konstruktor
-        this.azymut = this.newAzymut = 0;
+    public Knob(int value) { // konstruktor
+        this.value = this.newValue = 0;
         addMouseListener(this);
     }//end of constructor
 
@@ -42,7 +43,10 @@ public class Knob extends Component implements MouseListener {
         return new Dimension(100, 100);
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+
+        super.paintComponent(g);
+
         Dimension d = getSize();
         int r, w, h;
         r = Math.min(d.height, d.width);
@@ -53,7 +57,7 @@ public class Knob extends Component implements MouseListener {
         g.setColor(Color.green);
         if (entered) g.fillOval((w - r - 2) / 2, (h - r - 2) / 2, r - 5, r - 5);
         g.setColor(Color.red);
-        int alfa = 90 - azymut;
+        int alfa = 90 - value;
         g.drawLine(w / 2, h / 2,
                 w / 2 + (int) (r / 2 * Math.cos(alfa * Math.PI / 180)),
                 h / 2 - (int) (r / 2 * Math.sin(alfa * Math.PI / 180)));
@@ -65,16 +69,16 @@ public class Knob extends Component implements MouseListener {
         g.fill3DRect(w / 2 - 20, h / 2 - 20, 40, 20, false);
         g.setColor(Color.red);
         setFont(new Font("Helvetica", Font.BOLD, 16));
-        g.drawString(new Integer(newAzymut).toString(), w / 2 - 10, h / 2 - 5);
+        g.drawString(new Integer(newValue).toString(), w / 2 - 10, h / 2 - 5);
     }
 
-    public void setAzymut(int newAzymut) {
-        this.newAzymut = newAzymut;
+    public void setValue(int newValue) {
+        this.newValue = newValue;
         repaint();
     }
 
-    public int getAzymut() {
-        return (newAzymut);
+    public int getKnobValue() {
+        return (newValue);
     }
 
     public void mouseEntered(MouseEvent me) {
@@ -106,9 +110,9 @@ public class Knob extends Component implements MouseListener {
             y = me.getY();
             double yy = (getSize().height / 2.0 - y);
             double xx = (x - getSize().width / 2.0);
-            newAzymut = 90 - (int) (180 / Math.PI * Math.atan(yy / xx));
-            if (xx < 0) newAzymut += 180;
-            azymut = newAzymut;
+            newValue = 90 - (int) (180 / Math.PI * Math.atan(yy / xx));
+            if (xx < 0) newValue += 180;
+            value = newValue;
             repaint();
             if (actionListener != null) actionListener.actionPerformed(new
                     ActionEvent(this, ActionEvent.ACTION_PERFORMED, " ??? "));

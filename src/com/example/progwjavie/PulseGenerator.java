@@ -60,7 +60,7 @@ public class PulseGenerator extends Thread implements PulseSource {
 
 
     public int getPulseDelay() {
-        return 0;
+        return delay;
     }
 
     public void setPulseCount(int burst) {
@@ -77,7 +77,7 @@ public class PulseGenerator extends Thread implements PulseSource {
 // fire up pulse event
 // test mode & check if last pulse
 // sleep for a moment
-                 System.out.printf("\nI am a thread, my name is : " + getName());
+                // System.out.printf("\nI am a thread, my name is : " + getName());
 
                 if (mode == PulseGenerator.BURST_MODE) {
                     burstCount--;
